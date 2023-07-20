@@ -10,7 +10,7 @@ import java.util.List;
 public class MovieFinderTest {
 
 	public static void main(String[] args) {
-		MovieFinder movieFinder = new MovieFinder();
+		MovieFinder movieFinder = new CsvMovieFinder();
 
 		MovieBuddyApplication application = new MovieBuddyApplication();
 		
