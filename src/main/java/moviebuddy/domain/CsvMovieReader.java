@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-//@Component
+//@Repository("movieReader")
 @Repository
 public class CsvMovieReader implements MovieReader {
     /**
