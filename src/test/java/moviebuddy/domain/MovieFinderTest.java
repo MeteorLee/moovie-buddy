@@ -1,6 +1,7 @@
 package moviebuddy.domain;
 
 import moviebuddy.MovieBuddyApplication;
+import moviebuddy.MovieBuddyFactory;
 
 import java.util.List;
 
@@ -10,7 +11,8 @@ import java.util.List;
 public class MovieFinderTest {
 
 	public static void main(String[] args) {
-		MovieFinder movieFinder = new MovieFinder(new CsvMovieReader());
+		MovieBuddyFactory movieBuddyFactory = new MovieBuddyFactory();
+		MovieFinder movieFinder = movieBuddyFactory.movieFinder();
 
 		MovieBuddyApplication application = new MovieBuddyApplication();
 		
