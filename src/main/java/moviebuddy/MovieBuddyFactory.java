@@ -1,8 +1,5 @@
 package moviebuddy;
 
-import moviebuddy.domain.CsvMovieReader;
-import moviebuddy.domain.MovieFinder;
-import moviebuddy.domain.MovieReader;
 import org.springframework.context.annotation.*;
 
 @Configuration
@@ -13,7 +10,7 @@ public class MovieBuddyFactory {
 
     @Configuration
     static class DomainModuleConfig {
-        
+
     }
 
     @Configuration
