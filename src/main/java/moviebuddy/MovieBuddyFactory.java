@@ -12,6 +12,7 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 
 @Configuration
+@PropertySource("/application.properties")
 @ComponentScan(basePackages = {"moviebuddy"})
 @Import({MovieBuddyFactory.DomainModuleConfig.class, MovieBuddyFactory.DataSourceModuleConfig.class})
 //@ImportResource("xml file location") xml로 작성한 경우
