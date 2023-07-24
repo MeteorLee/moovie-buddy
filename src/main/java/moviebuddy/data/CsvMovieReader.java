@@ -12,6 +12,8 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.io.CharArrayReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,7 +31,7 @@ import java.util.stream.Collectors;
 
 @Profile(MovieBuddyProfile.CSV_MODE)
 @Repository
-public class CsvMovieReader implements MovieReader, InitializingBean, DisposableBean {
+public class CsvMovieReader implements MovieReader {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
@@ -84,7 +86,7 @@ public class CsvMovieReader implements MovieReader, InitializingBean, Disposable
         }
     }
 
-    @Override
+    @PostConstruct
     public void afterPropertiesSet() throws Exception {
 
         URL metadataUrl = ClassLoader.getSystemResource(metadata);
@@ -98,7 +100,7 @@ public class CsvMovieReader implements MovieReader, InitializingBean, Disposable
 
     }
 
-    @Override
+    @PreDestroy
     public void destroy() throws Exception {
         log.info("Destroyed bean");
     }
