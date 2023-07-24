@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Profile(MovieBuddyProfile.XML_MODE)
 @Repository
-public class XmlMovieReader implements MovieReader {
+public class XmlMovieReader extends AbstractFileSystemMovieReader implements MovieReader {
 
     private final Unmarshaller unmarshaller;
 
@@ -35,7 +35,7 @@ public class XmlMovieReader implements MovieReader {
 //            final JAXBContext jaxb = JAXBContext.newInstance(MovieMetadata.class);
 //            final Unmarshaller unmarshaller = jaxb.createUnmarshaller();
 
-            final InputStream content = ClassLoader.getSystemResourceAsStream("movie_metadata.xml");
+            final InputStream content = ClassLoader.getSystemResourceAsStream(getMetadata());
             final Source source = new StreamSource(content);
             final MovieMetadata metadata = (MovieMetadata) unmarshaller.unmarshal(source);
 
