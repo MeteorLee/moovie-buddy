@@ -5,6 +5,9 @@ import moviebuddy.MovieBuddyProfile;
 import moviebuddy.domain.Movie;
 import moviebuddy.domain.MovieReader;
 import moviebuddy.util.FileSystemUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
@@ -26,8 +29,9 @@ import java.util.stream.Collectors;
 
 @Profile(MovieBuddyProfile.CSV_MODE)
 @Repository
-public class CsvMovieReader implements MovieReader, InitializingBean {
+public class CsvMovieReader implements MovieReader, InitializingBean, DisposableBean {
 
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private String metadata;
 
@@ -92,5 +96,10 @@ public class CsvMovieReader implements MovieReader, InitializingBean {
             throw new ApplicationException(String.format("cannot read to metadata.[%s]", metadata));
         }
 
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        log.info("Destroyed bean");
     }
 }
