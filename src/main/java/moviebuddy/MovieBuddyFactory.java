@@ -33,9 +33,11 @@ public class MovieBuddyFactory {
 
         @Profile(MovieBuddyProfile.CSV_MODE)
         @Bean
-        public CsvMovieReader movieReader() {
+        public CsvMovieReader csvMovieReader() {
             CsvMovieReader csvMovieReader = new CsvMovieReader();
-            csvMovieReader.setMetadata("movie_metadata.csv");
+
+            // 애플리케이션 외부에서 작성된 설정 정보를 읽어, 메타데이터 위치 설정하기
+            csvMovieReader.setMetadata(System.getProperty("movie.metadata"));
 
             return csvMovieReader;
         }
@@ -44,7 +46,7 @@ public class MovieBuddyFactory {
         @Bean
         public XmlMovieReader xmlMovieReader(Unmarshaller unmarshaller) {
             XmlMovieReader xmlMovieReader = new XmlMovieReader(unmarshaller);
-            xmlMovieReader.setMetadata("movie_metadata.xml");
+            xmlMovieReader.setMetadata(System.getProperty("movie.metadata"));
 
             return xmlMovieReader;
         }
