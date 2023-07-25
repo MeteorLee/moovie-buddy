@@ -1,15 +1,16 @@
 package moviebuddy;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import moviebuddy.data.CsvMovieReader;
-import moviebuddy.data.XmlMovieReader;
-import org.springframework.beans.factory.annotation.Autowired;
+import moviebuddy.domain.Movie;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.annotation.*;
-import org.springframework.core.env.Environment;
-import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import java.io.FileNotFoundException;
-import java.net.URISyntaxException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Configuration
 @PropertySource("/application.properties")
@@ -31,8 +32,28 @@ public class MovieBuddyFactory {
 
     }
 
+    @Bean
+    public CacheManager caffeineCacheManager() {
+        CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+        cacheManager.setCaffeine(Caffeine.newBuilder().expireAfterWrite(3, TimeUnit.SECONDS));
+
+        return cacheManager;
+    }
+
     @Configuration
     static class DataSourceModuleConfig {
+
+//        @Bean
+//        public CsvMovieReader csvMovieReader() {
+//            CaffeineCacheManager cacheManager = new CaffeineCacheManager();
+//
+//            Cache<String, List<Movie>> cache = Caffeine.newBuilder()
+//                    .expireAfterWrite(3, TimeUnit.SECONDS)
+//                    .build();
+//
+//            return new CsvMovieReader(cacheManager);
+
+//        }
 
     }
 
