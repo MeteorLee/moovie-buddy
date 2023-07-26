@@ -13,7 +13,7 @@ class CsvMovieReaderTest {
 
     @Test
     void valid_Metadata() throws Exception {
-        CsvMovieReader movieReader = new CsvMovieReader(new NoOpCacheManager());
+        CsvMovieReader movieReader = new CsvMovieReader();
         movieReader.setMetadata("movie_metadata.csv");
         movieReader.setResourceLoader(new DefaultResourceLoader());
 
@@ -23,7 +23,7 @@ class CsvMovieReaderTest {
 
     @Test
     void invalid_Metadata() {
-        CsvMovieReader movieReader = new CsvMovieReader(new NoOpCacheManager());
+        CsvMovieReader movieReader = new CsvMovieReader();
         movieReader.setResourceLoader(new DefaultResourceLoader());
 
         Assertions.assertThrows(FileNotFoundException.class, () -> {
