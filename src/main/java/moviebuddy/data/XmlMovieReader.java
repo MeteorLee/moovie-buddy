@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.oxm.Unmarshaller;
+
+import javax.cache.annotation.CacheResult;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -29,6 +31,7 @@ public class XmlMovieReader extends AbstractMetadataResourceMovieReader implemen
     }
 
     @Override
+//    @CacheResult(cacheName = "movies")
     public List<Movie> loadMovies() {
 
         try {
