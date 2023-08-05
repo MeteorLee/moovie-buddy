@@ -56,6 +56,10 @@ public class MovieBuddyFactory {
 
             ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
             proxyFactoryBean.setTarget(target);
+
+            // 클래스 프락시 활성화/비활성화(false, 기본값)
+            // proxyFactoryBean.setProxyTargetClass(true);
+
             proxyFactoryBean.addAdvice(new CachingAdvice(cacheManager));
 
             return proxyFactoryBean;
