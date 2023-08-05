@@ -17,6 +17,7 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
@@ -31,7 +32,8 @@ import java.util.concurrent.TimeUnit;
 @ComponentScan(basePackages = {"moviebuddy"})
 @Import({MovieBuddyFactory.DomainModuleConfig.class, MovieBuddyFactory.DataSourceModuleConfig.class})
 //@ImportResource("xml file location") xml로 작성한 경우
-@EnableAspectJAutoProxy
+//@EnableAspectJAutoProxy
+@EnableCaching
 public class MovieBuddyFactory {
 
     @Bean
@@ -54,13 +56,12 @@ public class MovieBuddyFactory {
 
         return cacheManager;
     }
-
+/*
     @Bean
     public CachingAspect cachingAspect(CacheManager cacheManager) {
         return new CachingAspect(cacheManager);
     }
 
-/*
     @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         return new DefaultAdvisorAutoProxyCreator();
