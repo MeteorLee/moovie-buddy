@@ -92,6 +92,7 @@ public class MovieBuddyApplication {
         commandActions.put(Command.releasedYearBy, arguments -> {
             int releaseYear;
             try {
+                // 사용자가 입력한 명령어를 해석
                 releaseYear = Integer.parseInt(arguments.get(1));
             } catch (IndexOutOfBoundsException | NumberFormatException error) {
                 throw new ApplicationException.InvalidCommandArgumentsException(error);
@@ -132,7 +133,21 @@ public class MovieBuddyApplication {
                 }
                 commandAction.accept(arguments);
             } catch (ApplicationException error) {
-                output.println(error.getMessage());
+//                if (error instanceof ApplicationException.CommandNotFoundException) {
+//                    output.println(messageSource.getMessage("application.error.commandNotFoundError", new Object[0], Locale.getDefault()));
+//                } else if (error instanceof ApplicationException.UndefinedCommandActionException) {
+//                    output.println(messageSource.getMessage("application.error.commandNotFoundError", new Object[0], Locale.getDefault()));
+//                } else if (error instanceof ApplicationException.InvalidCommandArgumentsException) {
+//                    output.println(messageSource.getMessage("application.error.commandNotFoundError", new Object[0], Locale.getDefault()));
+//                }
+
+                // application.errors.CommandNotFoundException
+                // application.errors.UndefinedCommandActionException
+
+                String code = String.format("application.errors.%s", error.getClass().getSimpleName());
+
+                output.println(messageSource.getMessage(code, new Object[0], error.getMessage(), Locale.getDefault()));
+
             } finally {
                 output.flush();
             }
