@@ -17,8 +17,10 @@ import org.springframework.aop.support.DefaultPointcutAdvisor;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 import org.springframework.aop.support.annotation.AnnotationMatchingPointcut;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CachingConfigurer;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cache.caffeine.CaffeineCacheManager;
+import org.springframework.cache.interceptor.*;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
@@ -34,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 //@ImportResource("xml file location") xml로 작성한 경우
 //@EnableAspectJAutoProxy
 @EnableCaching
-public class MovieBuddyFactory {
+public class MovieBuddyFactory implements CachingConfigurer {
 
     @Bean
     public Jaxb2Marshaller jaxb2Marshaller() {
@@ -47,8 +49,8 @@ public class MovieBuddyFactory {
     @Configuration
     static class DomainModuleConfig {
 
-    }
 
+    }
     @Bean
     public CacheManager caffeineCacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
@@ -56,35 +58,55 @@ public class MovieBuddyFactory {
 
         return cacheManager;
     }
-/*
-    @Bean
-    public CachingAspect cachingAspect(CacheManager cacheManager) {
-        return new CachingAspect(cacheManager);
-    }
 
-    @Bean
-    public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
-        return new DefaultAdvisorAutoProxyCreator();
-    }
+    /*
+        @Bean
+        public CachingAspect cachingAspect(CacheManager cacheManager) {
+            return new CachingAspect(cacheManager);
+        }
 
-    @Bean
-    public Advisor cachingAdvisor(CacheManager cacheManager) {
-        // 이름 기반
-//        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
-//        pointcut.setMappedName("load*");
+        @Bean
+        public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
+            return new DefaultAdvisorAutoProxyCreator();
+        }
 
-        // 어노테이션 기반
-        AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(null, CacheResult.class);
+        @Bean
+        public Advisor cachingAdvisor(CacheManager cacheManager) {
+            // 이름 기반
+    //        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
+    //        pointcut.setMappedName("load*");
 
-        Advice advice = new CachingAdvice(cacheManager);
+            // 어노테이션 기반
+            AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(null, CacheResult.class);
 
-        // Advisor = PointCut(대상 선점 알고리즘) + Advice(부가 기능)
-        return new DefaultPointcutAdvisor(pointcut, advice);
-    }
-*/
+            Advice advice = new CachingAdvice(cacheManager);
+
+            // Advisor = PointCut(대상 선점 알고리즘) + Advice(부가 기능)
+            return new DefaultPointcutAdvisor(pointcut, advice);
+        }
+    */
     @Configuration
     static class DataSourceModuleConfig {
 
     }
 
+    @Override
+    public CacheManager cacheManager() {
+        return caffeineCacheManager();
+    }
+
+    @Override
+    public CacheResolver cacheResolver() {
+        return new SimpleCacheResolver(caffeineCacheManager());
+    }
+
+    @Override
+    public KeyGenerator keyGenerator() {
+        return new SimpleKeyGenerator();
+    }
+
+    @Override
+    public CacheErrorHandler errorHandler() {
+        return new SimpleCacheErrorHandler();
+    }
 }
