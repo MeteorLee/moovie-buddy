@@ -8,6 +8,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 
@@ -31,10 +32,10 @@ public class MovieBuddyApplication {
 
     @Bean
     public MessageSource messageSource() {
-        ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
         messageSource.setBasename("messages");
         messageSource.setDefaultEncoding("utf-8");
-
+        messageSource.setCacheSeconds(5);
         return messageSource;
     }
 
@@ -54,7 +55,7 @@ public class MovieBuddyApplication {
     public void run(String[] args) throws Exception {
         final ApplicationContext applicationContext =
                 new AnnotationConfigApplicationContext(MovieBuddyFactory.class, MovieBuddyApplication.class);
-        final Environment environment = applicationContext.getEnvironment();
+//        final Environment environment = applicationContext.getEnvironment();
         final MessageSource messageSource = applicationContext.getBean(MessageSource.class);
         final MovieFinder movieFinder = applicationContext.getBean(MovieFinder.class);
 
