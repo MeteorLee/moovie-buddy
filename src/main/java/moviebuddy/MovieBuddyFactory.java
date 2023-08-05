@@ -3,6 +3,7 @@ package moviebuddy;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import moviebuddy.cache.CachingAdvice;
+import moviebuddy.cache.CachingAspect;
 import moviebuddy.data.CachingMovieReader;
 import moviebuddy.data.CsvMovieReader;
 import moviebuddy.domain.Movie;
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
 @ComponentScan(basePackages = {"moviebuddy"})
 @Import({MovieBuddyFactory.DomainModuleConfig.class, MovieBuddyFactory.DataSourceModuleConfig.class})
 //@ImportResource("xml file location") xml로 작성한 경우
+@EnableAspectJAutoProxy
 public class MovieBuddyFactory {
 
     @Bean
@@ -54,6 +56,12 @@ public class MovieBuddyFactory {
     }
 
     @Bean
+    public CachingAspect cachingAspect(CacheManager cacheManager) {
+        return new CachingAspect(cacheManager);
+    }
+
+/*
+    @Bean
     public DefaultAdvisorAutoProxyCreator defaultAdvisorAutoProxyCreator() {
         return new DefaultAdvisorAutoProxyCreator();
     }
@@ -63,7 +71,7 @@ public class MovieBuddyFactory {
         // 이름 기반
 //        NameMatchMethodPointcut pointcut = new NameMatchMethodPointcut();
 //        pointcut.setMappedName("load*");
-        
+
         // 어노테이션 기반
         AnnotationMatchingPointcut pointcut = new AnnotationMatchingPointcut(null, CacheResult.class);
 
@@ -72,7 +80,7 @@ public class MovieBuddyFactory {
         // Advisor = PointCut(대상 선점 알고리즘) + Advice(부가 기능)
         return new DefaultPointcutAdvisor(pointcut, advice);
     }
-
+*/
     @Configuration
     static class DataSourceModuleConfig {
 
